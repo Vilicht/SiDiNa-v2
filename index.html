@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <title>SIDINA - Layanan Dukcapil Kota Semarang</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="screen" id="loginScreen">
+  <div class="login-container">
+    <div class="login-hero">
+      <div class="hero-bg">
+        <div class="mesh-gradient"></div>
+        <div class="floating-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+          <div class="shape shape-3"></div>
+        </div>
+      </div>
+      
+      <div class="login-content">
+        <div class="logo-stack">
+          <div class="logo-badge">
+            <span class="logo-icon">🏛️</span>
+          </div>
+          <h1 class="brand-title">SIDINA</h1>
+          <p class="brand-tagline">Sistem Informasi Dinas Adminitrasi</p>
+          <div class="brand-location">
+            <span class="location-pin">📍</span>
+            <span>TPPDK Kec. Semarang Selatan</span>
+          </div>
+        </div>
+        
+        <div class="login-form">
+          <div class="input-field">
+            <input type="text" id="nameInput" placeholder="Masukkan nama lengkap" autocomplete="off">
+            <div class="input-line"></div>
+          </div>
+          
+          <button onclick="startApp()" class="btn-login">
+            <span>Masuk Sekarang</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10H16M16 10L12 6M16 10L12 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="login-footer">
+          <p>Powered by <strong>Vilicht</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="screen hidden" id="mainApp">
+  
+  <!-- HOME SCREEN -->
+  <div class="app-screen" id="homeScreen">
+    <div class="app-header">
+      <div class="header-top">
+        <div class="header-greeting">
+          <h2>Halo, <span id="userName"></span> 👋</h2>
+          <p>Selamat datang di SIDINA</p>
+        </div>
+        <button class="btn-notif">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.37 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.64 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z" fill="currentColor"/>
+          </svg>
+          <span class="notif-badge">3</span>
+        </button>
+      </div>
+      
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <div class="status-item">
+          <span class="status-icon">🕐</span>
+          <span class="status-text" id="operationStatus">Buka</span>
+        </div>
+        <div class="status-divider"></div>
+        <div class="status-item">
+          <span class="status-icon">⚠️</span>
+          <span class="status-text">Blangko KTP Terbatas</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- INFO TERKINI - HORIZONTAL SCROLL WITH SOLID CARDS -->
+    <div class="info-section">
+      <div class="section-header">
+        <h3>📌 Info Terkini</h3>
+        <div class="auto-scroll-indicator">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+      
+      <div class="info-scroll-wrapper">
+        <div class="info-scroll" id="infoScroll">
+          <!-- Cards will be dynamically added -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- BERITA SEMARANG - HORIZONTAL SCROLL PILLS -->
+    <div class="news-section">
+      <div class="section-header">
+        <h3>📰 Berita Semarang</h3>
+        <button class="see-all-btn" onclick="openAllNews()">Lihat Semua →</button>
+      </div>
+      
+      <div class="news-scroll-wrapper">
+        <div class="news-scroll" id="newsScroll">
+          <!-- News pills will be dynamically added -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- QUICK ACCESS -->
+    <div class="quick-access">
+      <div class="section-header">
+        <h3>⚡ Akses Cepat</h3>
+      </div>
+      
+      <div class="access-grid">
+        <button class="access-card" onclick="switchScreen('chatScreen')">
+          <div class="access-icon">💬</div>
+          <span>Chat AI</span>
+          <div class="access-badge">Populer</div>
+        </button>
+        
+        <button class="access-card" onclick="switchScreen('musicScreen')">
+          <div class="access-icon">🎵</div>
+          <span>Musik Lokal</span>
+        </button>
+        
+        <button class="access-card" onclick="showOperationHoursModal()">
+          <div class="access-icon">🕐</div>
+          <span>Jam Buka</span>
+        </button>
+        
+        <button class="access-card" onclick="openSidenok()">
+          <div class="access-icon">📱</div>
+          <span>S'DnoK</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- MUSIC SCREEN -->
+  <div class="app-screen hidden" id="musicScreen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="switchScreen('homeScreen')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div>
+        <h2>🎵 Musik Lokal</h2>
+        <p>Playlist musik dari Semarang</p>
+      </div>
+    </div>
+    
+    <div class="music-container">
+      <div class="now-playing" id="nowPlaying">
+        <div class="now-playing-art">
+          <div class="visualizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+        </div>
+        <div class="now-playing-info">
+          <h3 id="currentSongTitle">Pilih lagu untuk diputar</h3>
+          <p id="currentArtist">-</p>
+        </div>
+      </div>
+      
+      <div class="playlist-section">
+        <h3>Playlist</h3>
+        <div class="playlist" id="playlist">
+          <!-- Songs will be dynamically added -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- CHAT SCREEN - WITH SERVICE SELECTION -->
+  <div class="app-screen hidden" id="chatScreen">
+    
+    <!-- SERVICE SELECTION (Shows first before chat) -->
+    <div class="service-selection" id="serviceSelection">
+      <div class="screen-header">
+        <button class="btn-back" onclick="switchScreen('homeScreen')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div>
+          <h2>💬 Pilih Layanan</h2>
+          <p>Pilih layanan yang ingin Anda tanyakan</p>
+        </div>
+      </div>
+      
+      <div class="service-content">
+        <!-- Announcement Banner -->
+        <div class="announcement-card">
+          <div class="announcement-icon">📢</div>
+          <div class="announcement-text">
+            <strong>PENGUMUMAN!</strong>
+            <p>Stok blangko KTP sedang <strong>MENIPIS</strong>. Prioritas untuk KTP hilang/rusak.</p>
+          </div>
+        </div>
+        
+        <!-- Online Services -->
+        <div class="service-category">
+          <div class="category-header">
+            <span class="category-badge online">📱 ONLINE</span>
+            <span class="category-desc">Daftar via S'DnoK</span>
+          </div>
+          
+          <div class="service-grid">
+            <button class="service-card online" onclick="selectService('Akta Kelahiran')">
+              <span class="service-emoji">👶</span>
+              <span class="service-name">Akta Kelahiran</span>
+            </button>
+            
+            <button class="service-card online" onclick="selectService('Kartu Identitas Anak')">
+              <span class="service-emoji">👧</span>
+              <span class="service-name">KIA</span>
+            </button>
+            
+            <button class="service-card online" onclick="selectService('Perubahan Biodata Kartu Keluarga')">
+              <span class="service-emoji">📋</span>
+              <span class="service-name">Perubahan KK</span>
+            </button>
+            
+            <button class="service-card online" onclick="selectService('Perpindahan')">
+              <span class="service-emoji">🏠</span>
+              <span class="service-name">Pindah/Datang</span>
+            </button>
+            
+            <button class="service-card online" onclick="selectService('Akta Nikah Cerai')">
+              <span class="service-emoji">💍</span>
+              <span class="service-name">Akta Nikah/Cerai</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Offline Services -->
+        <div class="service-category">
+          <div class="category-header">
+            <span class="category-badge offline">🏢 OFFLINE</span>
+            <span class="category-desc">Langsung ke TPPDK</span>
+          </div>
+          
+          <div class="service-grid">
+            <button class="service-card offline" onclick="selectService('Cetak KTP')">
+              <span class="service-emoji">🪪</span>
+              <span class="service-name">Cetak KTP</span>
+              <span class="service-warning">⚠️ Terbatas</span>
+            </button>
+            
+            <button class="service-card offline" onclick="selectService('Rekam KTP')">
+              <span class="service-emoji">📸</span>
+              <span class="service-name">Rekam KTP</span>
+            </button>
+            
+            <button class="service-card offline" onclick="selectService('Akta Kematian')">
+              <span class="service-emoji">🕊️</span>
+              <span class="service-name">Akta Kematian</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- FAQ & Help -->
+        <div class="service-category">
+          <div class="category-header">
+            <span class="category-badge info">❓ INFO</span>
+            <span class="category-desc">Bantuan & FAQ</span>
+          </div>
+          
+          <div class="service-grid">
+            <button class="service-card info" onclick="selectService('FAQ')">
+              <span class="service-emoji">❓</span>
+              <span class="service-name">FAQ</span>
+            </button>
+            
+            <button class="service-card info" onclick="openSidenok()">
+              <span class="service-emoji">📱</span>
+              <span class="service-name">Download S'DnoK</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- CHAT INTERFACE (Shows after selecting service) -->
+    <div class="chat-interface hidden" id="chatInterface">
+      <div class="chat-header">
+        <button class="btn-back" onclick="backToServiceSelection()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="bot-avatar-stack">
+          <div class="bot-avatar">
+            <span>🤖</span>
+            <div class="bot-status"></div>
+          </div>
+          <div class="bot-info">
+            <h3>SIDINA AI</h3>
+            <p id="currentServiceName">Online • Siap membantu</p>
+          </div>
+        </div>
+        
+        <button class="btn-chat-menu" onclick="showChatMenu()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="5" r="2" fill="currentColor"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+            <circle cx="12" cy="19" r="2" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-date">Hari ini</div>
+      </div>
+      
+      <div class="quick-replies-area" id="quickRepliesArea"></div>
+      
+      <div class="chat-input-area">
+        <div class="chat-input-wrapper">
+          <input type="text" id="chatInput" placeholder="Ketik pesan...">
+          <button class="btn-send" id="btnSend" onclick="sendChatMessage()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- PROFILE SCREEN -->
+  <div class="app-screen hidden" id="profileScreen">
+    <div class="profile-hero">
+      <div class="profile-bg">
+        <div class="profile-gradient"></div>
+      </div>
+      
+      <div class="profile-info">
+        <div class="profile-avatar">
+          <span id="userInitial">U</span>
+        </div>
+        <h2 id="profileName">User</h2>
+        <p class="profile-role">Pengguna SIDINA</p>
+      </div>
+    </div>
+    
+    <div class="profile-content">
+      <div class="profile-section">
+        <h3>Pengaturan</h3>
+        
+        <div class="profile-menu">
+          <button class="profile-item" onclick="showOperationHoursModal()">
+            <div class="item-icon">🕐</div>
+            <div class="item-info">
+              <span>Jam Operasional</span>
+              <small>Lihat jadwal TPPDK</small>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          
+          <button class="profile-item" onclick="openSidenok()">
+            <div class="item-icon">📱</div>
+            <div class="item-info">
+              <span>Download S'DnoK</span>
+              <small>Aplikasi pendaftaran online</small>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          
+          <button class="profile-item" onclick="openLocation()">
+            <div class="item-icon">📍</div>
+            <div class="item-info">
+              <span>Lokasi TPPDK</span>
+              <small>Kec. Semarang Selatan</small>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          
+          <button class="profile-item" onclick="showAbout()">
+            <div class="item-icon">ℹ️</div>
+            <div class="item-info">
+              <span>Tentang SIDINA</span>
+              <small>Versi 2.0.0</small>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <button class="btn-logout" onclick="logout()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M13 3H16C16.5304 3 17.0391 3.21071 17.4142 3.58579C17.7893 3.96086 18 4.46957 18 5V15C18 15.5304 17.7893 16.0391 17.4142 16.4142C17.0391 16.7893 16.5304 17 16 17H13M8 13L12 9M12 9L8 5M12 9H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Keluar</span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-screen="homeScreen" onclick="switchScreen('homeScreen')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Beranda</span>
+    </button>
+    
+    <button class="nav-item" data-screen="musicScreen" onclick="switchScreen('musicScreen')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18V5L21 3V16M9 18C9 19.6569 7.65685 21 6 21C4.34315 21 3 19.6569 3 18C3 16.3431 4.34315 15 6 15C7.65685 15 9 16.3431 9 18ZM21 16C21 17.6569 19.6569 19 18 19C16.3431 19 15 17.6569 15 16C15 14.3431 16.3431 13 18 13C19.6569 13 21 14.3431 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Musik</span>
+    </button>
+    
+    <button class="nav-item" data-screen="chatScreen" onclick="switchScreen('chatScreen')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Chat AI</span>
+    </button>
+    
+    <button class="nav-item" data-screen="profileScreen" onclick="switchScreen('profileScreen')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Profil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- MODAL: JAM OPERASIONAL -->
+<div class="modal-overlay hidden" id="hoursModal" onclick="closeModal('hoursModal')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>🕐 Jam Operasional TPPDK</h3>
+      <button class="modal-close" onclick="closeModal('hoursModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="hours-list">
+        <div class="hours-row">
+          <span class="hours-day">Senin - Kamis</span>
+          <span class="hours-time">08.15 - 15.00 WIB</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Jumat</span>
+          <span class="hours-time">08.00 - 13.00 WIB</span>
+        </div>
+        <div class="hours-row closed">
+          <span class="hours-day">Sabtu - Minggu</span>
+          <span class="hours-time">LIBUR</span>
+        </div>
+      </div>
+      <div class="modal-status" id="modalOperationStatus"></div>
+      <a href="https://maps.app.goo.gl/NjwbHdTpFp2dPc6w9" target="_blank" class="modal-location-btn">
+        📍 Buka di Google Maps
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+<!-- MODAL: BERITA DETAIL -->
+<div class="modal-overlay hidden" id="newsModal" onclick="closeModal('newsModal')">
+  <div class="modal-content news-modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>📰 Detail Berita</h3>
+      <button class="modal-close" onclick="closeModal('newsModal')">✕</button>
+    </div>
+    <div class="modal-body" id="newsModalBody">
+      <!-- Content loaded dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ALL NEWS -->
+<div class="modal-overlay hidden" id="allNewsModal" onclick="closeModal('allNewsModal')">
+  <div class="modal-content news-modal full" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>📰 Semua Berita Semarang</h3>
+      <button class="modal-close" onclick="closeModal('allNewsModal')">✕</button>
+    </div>
+    <div class="modal-body" id="allNewsModalBody">
+      <!-- Content loaded dynamically -->
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+
